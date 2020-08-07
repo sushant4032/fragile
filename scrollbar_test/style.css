@@ -1,0 +1,97 @@
+body{
+    position:absolute;
+}
+
+main {
+    width:90%;
+    margin:auto;
+    margin-top:40px;
+}
+
+.header{
+    height:50vh;
+    background:#444;
+    color:white;
+}
+
+::-webkit-scrollbar {
+    position: relative;
+    top:50px;
+	width: 53px;
+	height: 10px;
+}
+
+::-webkit-scrollbar-track-piece:vertical:start {
+    background:transparent;
+    background-image: url(res/rope.jpg);
+    background-size: contain;
+}
+
+/* Bottom area below thumb and down button */
+::-webkit-scrollbar-track-piece:vertical:end {
+	background:transparent;
+	/* border: 1px dashed pink; */
+}
+
+::-webkit-scrollbar-thumb:vertical {
+	height: 20px;
+    background: white;
+    background-image: url(res/hook.svg);
+    background-repeat: no-repeat;
+    background-position: top;
+}
+
+/* Turn on a 13x13 scrollbar */
+
+/* ::-webkit-scrollbar-button:vertical {
+        background-color: red;
+        border: 2px dashed blue;
+    } */
+
+/* Turn on single button up on top, and down on bottom */
+/* ::-webkit-scrollbar-button:start:decrement,
+    ::-webkit-scrollbar-button:end:increment {
+        display: block;
+    } */
+
+/* Turn off the down area up on top, and up area on bottom */
+/* ::-webkit-scrollbar-button:vertical:start:increment,
+    ::-webkit-scrollbar-button:vertical:end:decrement {
+        display: none;
+    } */
+
+/* Place The scroll down button at the bottom */
+/* ::-webkit-scrollbar-button:vertical:increment {
+        background-color: black;
+        border: 1px dashed blue;
+    } */
+
+/* Place The scroll up button at the up */
+/* ::-webkit-scrollbar-button:vertical:decrement {
+        background-color: purple;
+        border: 1px dashed blue;
+    } */
+
+/* ::-webkit-scrollbar-track:vertical {
+        background-color: blue;
+        border: 1px dashed pink;
+    } */
+
+/* Top area above thumb and below up button */
+
+/* Track below and above */
+/* ::-webkit-scrollbar-track-piece {
+        background-color: green;
+    } */
+
+/* The thumb itself */
+
+/* Corner */
+/* ::-webkit-scrollbar-corner:vertical {
+        background-color: black;
+    } */
+
+/* Resizer */
+/* ::-webkit-scrollbar-resizer:vertical {
+        background-color: gray;
+    } */

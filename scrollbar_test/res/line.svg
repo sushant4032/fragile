@@ -1,0 +1,9 @@
+<svg width="9cm" height="10cm" viewBox="0 0 400 600"
+     xmlns="http://www.w3.org/2000/svg" version="1.1">
+ 
+  <desc>A vertical line in SVG</desc>
+
+
+ <path d="M275,200 v-150"
+        fill="yellow" stroke="blue" stroke-width="3" />
+</svg>

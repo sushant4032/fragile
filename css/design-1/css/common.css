@@ -1,0 +1,113 @@
+*{
+    margin:0px;
+    padding:0px;
+    box-sizing:border-box;
+    font:inherit;
+   
+}
+
+li{
+    list-style-type:none;
+}
+
+body{
+    font-size:1rem;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    color:#222;
+}
+
+.frame{
+    width:98vw;
+    height:98vh;
+    border:1px solid lightgrey;
+    margin:auto;
+    margin-top:1vh;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.frame-header{
+    height:15%;
+    background:lightgrey;
+   
+}
+
+.frame-body{
+    height:80%;
+     display:flex;
+    flex-direction:row;
+    position:relative;
+}
+
+.frame-footer{
+    height:5%;
+background:lightgrey;
+}
+
+.sidebar{
+    width:50%;
+     height:100%;
+    background:lightgrey;
+    position:absolute;
+    display:none;
+    transition-duration: 1s;
+   
+}
+
+.top-header-row{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:60%;
+}
+
+.bottom-header-row{
+    height:40%;
+}
+
+p.app-name{
+    font-size:2rem;
+}
+
+.top-nav{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    
+    background:grey;
+    color:white;
+}
+
+.top-nav li{
+    padding:0.5rem;
+    cursor:pointer;
+}
+
+.sidebar-opener{
+    flex-grow:1;
+    justify-self:flex-start;
+    color:yellow;
+}
+
+.sidebar-closer{
+align-self:flex-end;
+}
+
+.side-nav{
+    display:flex;
+    flex-direction:column;
+}
+
+.side-nav li{
+    /* margin:0.5rem; */
+    padding:0.5rem;
+    cursor:pointer;
+}
+
+.side-nav li:hover{
+    background:grey;
+    color:white;
+    
+}
+

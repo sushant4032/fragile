@@ -1,0 +1,56 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font: inherit;
+}
+
+body {
+	font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+	color: #555;
+}
+
+.frame {
+	width: 95vw;
+	height: 95vh;
+	border: 1px solid #ddd;
+	margin: 10px auto;
+	overflow: hidden;
+	border-radius: 5px;
+}
+
+header {
+	height: 15%;
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	background: #ddd;
+}
+
+.page {
+	height: 80%;
+    display: flex;
+    background-repeat: no-repeat;
+    background-size: cover;
+      background: url('/media/img-1.jpg');
+      opacity: 0.5;
+      background-repeat: no-repeat;
+      background-size:cover;
+      background:white;
+
+}
+
+.sidenav {
+	padding: 2rem;
+	width: 30%;
+	background: rgb(4,5,145,0.7);
+	font-size: 5rem;
+	border-right: 1px solid #ddd;
+	color: white;
+}
+
+.main {
+	font-size: 5rem;
+    padding: 2rem;
+}
