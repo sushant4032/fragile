@@ -1,0 +1,416 @@
+
+///////////////////////////////////////////////////////////////////April-17-2020
+// Node basics
+
+// A node app can be created by creating app.js file and writing node valid code.
+// The created node app can be run on terminal by  > node app.js
+// here is a simple node program.
+
+const http = require('http');
+const server = http.createServer(app);
+server.listen(3000);
+
+function app(req, res) {
+    // console.log(req);
+    res.setHeader('Content-Type', 'text/html');
+    res.write('hello...');
+    res.end();
+}
+
+
+////// to make the app restart automatically, install nodemon package and run the app useing nodemon
+
+//npm install nodemon -g
+//nodemon app.js
+
+
+
+
+// Modules can be imported into a node app as 
+const fs = require('fs');
+
+// REPL – read eval print loop
+// REPL is an environment to run node which starts by just typing node in terminal : here node commands can be executed. This is a node playground.
+// Alternate way of running node is by executing pre-written code files like app.js
+
+// ./ -> relative path
+// / -> absolute path
+
+
+//// Node development workflows 
+
+// NPM - a node package manager which comes preinstalled with node.
+// >> npm init // this command inside a folder initilizes a new npm package. This command also creates a package.json file and defines some configuration in json format.
+// in package.json file, create a new property "start" in "scripts" and set it to "node app.js"
+// >> npm start // will now run the defined command and therefore node app will get started. This is great for sharing projects as entry point is fixed.
+// >> npm start // is a special command which fires the command defined under start property. However any command can be run using npm by defining it under scripts but the syntax will be like 
+// >> npm run [property-name]
+
+// A typical node app consists of code + core packages + third party packages (dependencies).
+// Third party packages can be added from npm repository.
+// nodemon is a package to automaticlly restart the server when code changes.
+// >> npm install --save-dev nodemon 
+// packages are of two types, developement packages and production packages. 
+// nodemon is a developement package
+// --save ,installs as production package
+// --save-dev ,installs as developement package.
+// -g ,installs globally
+
+// when a third party package is installed, an entry is created into package.json file.
+// for insatlling all packages (dependencies) mentioned in package.json file
+// >>npm install (without any package name)
+// all these packages are installed in node_modules folder
+// for nodemon to work; start property to be set as "nodemon app.js", instead of "node app.js"
+// >nodemon app.js //will not work in this case from terminal because nodemon is not installed globally.
+// Nodemon will work from terminal if installed globally.
+
+/////// A refresher of how to set nodemon
+//>> npm init
+//>> npm install --save-dev nodemon
+// package.json -> "scripts":{"start":"nodemon app.js"}
+
+// vscode debugger : select the app.js file and start debugger then select the environment as node. 
+// While debugger is running and a breakpoint is activated, you can hover on varible names to check their current value.
+
+// in vscode view->debug opens a debug window where varible values can be seen. Add a varible to be watched
+
+/////vscode debugger can also be set to restart on code change. -- check the lecture 52 for how to.
+
+// varibles can be changed in runtime using vscode debugger window
+
+//////////////////////////////////////////////////////////////// April-18-2020
+// Express.js ///
+
+// >npm install --save express
+// (installed as production dependency)
+
+////////////// creating a server with express
+// in app.js
+const http = require('http');
+const express = require('express');
+const app = express();
+// this app is a  valid request handler
+const server = http.createServer(app);
+server.listen(3000);
+
+
+
+
+//express is middleware based. middlewares are functions which can be linked with app.use() function expsosed by express. Where app is a handler created by express.
+
+// middleware takes three arguments, req, res and next
+// a middleware will pass the control flow to the next defined middleware only if next() has been called inside it.
+// express automatically infers the content-type of response
+
+// express has a listen function which can shorten above code.
+// even http module is not required to be imported.
+
+const express = require('express');
+const app = express();
+app.listen(3000);
+app.use((req, res, next) => {
+    res.send('<h1>Hello express</h1>');
+});
+
+// app.use is an overloaded method. This mehod can take a path as an optional argument before the callback. Default is '/'. Also request path does not have to exactly match the argument, its enough to start the request path with the argement. Fox example a request to '/something' will trigger the middleware with path argument as '/'.
+
+// Due to non specificity of path argument, more spefic path handlers should come first before the generic ones.
+
+// Path specificity does not work at string level though. It works at decendent level (sperated by /). Therefore  /some will not trigger /s. But /s/o will trigger /s.
+
+//////////////////////// parsing the request body
+//> npm install --save body-parser
+
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+app.listen(3000);
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use((req, res, next) => {
+    console.log(req.body);
+})
+
+//without body parser, req.body is undefined.
+
+// app.get() nad app.post() are like like app.use() but only handles GET and POST requests.
+// app.delete(), app.patch(), app.put() also exists.
+
+//app.get(), app.post() etc however does exact mathing for path instead of decendent matching like app.use().
+
+
+/////////////////////////////////////////////////////////////////// April-19-2020
+/////////////// Express routing
+// create a folder named routes for routing files. Place all routing logic in files inside routes folder. Then in app.js, link all routing files.
+// content of a route file will be like
+
+const express = require('express');
+const router = express.Router();
+
+router.get('/', (req, res, next) => {
+    res.send('From router file');
+})
+
+module.exports = router;
+
+
+// then the content of app.js will be like
+
+express = require('express');
+const app = express();
+
+const route_1 = require('./routes/route_1');
+app.use(route_1);
+//... other middlewares goes here.
+app.listen(3000);
+
+// note that path for importing route_1 is relative path and .js can be ommited.
+//route_1 is a valid request handler.
+
+///////////////////////////////////////////////////404 paage
+// after handling all other routes.. add another for 404 page. Also status can be set with res.status(404);
+
+express = require('express');
+const app = express();
+//... other middlewares goes here.
+app.use('/', (req, res, next) => {
+    res.status(404).send('Page not found');
+})
+app.listen(3000);
+
+// '/' is optional here as it is also the default. By employing use instead of get, post etc all methods are handled by it. 
+// res.status() can be used with get, post etc as well.
+
+// For route based request filtering can be done like this
+// in the app.js file
+
+express = require('express');
+const app = express();
+const route_1 = require('./routes/route_1');
+app.use('/route1', route_1);
+//... other middlewares goes here.
+app.listen(3000);
+
+// and in the route_1 file
+const express = require('express');
+const router = express.Router();
+
+router.get('/sub_route_1', (req, res, next) => {
+    res.send('From router file');
+})
+module.exports = router;
+
+// The router will catch requests to /route_1/sub_route_1
+//route_1 part gets stripped at app.js file.
+
+/////////////////////////////////////////////////////////////////////// April-21-2020
+//////////////////using path package
+
+const path = require('path');
+//with express
+const express = require('express');
+const router = express.Router();
+
+router.get('/', (req, res, next) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'shop.html'));
+})
+
+module.exprots = router;
+
+// res.sendFile() takes an absolute path. However for file paths '/' represents root of operating system, not the root directory of the app.
+
+// __dirname is a global varible made available my node which gives absolute path of the directory of the script. '..' therfore goes one step up and then troverses to the right directory.???????????????????
+
+
+// path.join(), detects the OS and prepares the path string accordingly. e.g in linux subdirectory is represented by '/' whereas in windows it is '\'.
+
+// An utility for getting paths
+//create a module uitl/path.js
+
+const path = require('path');
+module.exports = path.dirname(process.mainModule.filename);
+
+//in app.js
+const root = require('util/path');
+res.sendFile(path.join(root, 'views', 'page.html'));
+
+
+/// public routing for css
+//express.static() can serve a directory publically. Any request with a file name extension will be directed to this directory with read access only.
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+// this routig must be before other routes
+// now in html specify css path as 
+// <link rel="stylesheet" href="/css/main.css">
+//note that path is not "/public/css/main.css"
+//Any such file extension request will automatically directed to public folder. This directory therefore is not required to be specified.
+
+/// Exporting multiple items form a module
+
+module.exports.a = a;
+module.exprots.b = b;
+
+// can also be shortened as 
+
+exprots.a = a;
+exports.b = b;
+
+// Then it can be imported as 
+
+const moduleData = require('./modules/module');
+console.log(moduleData.a);
+console.log(moduleData.b);
+
+//////////////// Templating engines
+//ejs, pug, and express-handlebars are thee express supported templating engines. These only works with express.
+/// npm install multiple packages at once 
+//> npm i --save ejs pug express-handlebars
+
+// to register pug as templating engine 
+
+// set 'view engine' key to the installed templating engine with app.set() method.
+// also 'views' key to be set to the directory where there views to be found. In this case it is a directory named views.
+
+
+const app = express();
+app.set('view engine', 'pug');
+app.set('views', 'views');
+
+
+// pug uses shorthand code
+// to send  a pug rendered page 
+
+res.render('shop');
+
+//where 'shop' actually refers to 'shop.pug' in views folder;
+
+////////////////////////////////////////////////////////////// Apr-23-2020
+
+//Rendering dynamic content with pug
+
+// pass the data as an object to res.render().
+
+res.render('shop', { key: 'value' });
+
+//then access the data with #{ }, to repeat use 'each'.
+
+// in shop.pug
+
+//div.grid#id-grid
+//      each p in products 
+//          h1 #{ p.title }
+//           p   #{p.body}
+
+// notice the separate indentation depth of 'each'
+
+// pug also supports if-else
+
+//  .grid
+//      each p in products
+//          if p.type == 'A'
+//              div.a
+//          else
+//              div.b
+
+////////////////////////////////////////////////////////////// Apr-30-2020
+
+//pug supports html layout templating with block/extends keywords
+
+// in layout pug file 
+
+// html(lang = "en")
+//      head
+//          link(rel = "stylesheet", href = "/css/styles.css")
+//            block style
+//      body
+//          header.main - header
+
+
+//          main
+//block content
+
+
+// in another pug file
+
+// extends layouts / layout.pug
+
+// block content 
+//      h1 hello there
+
+/////// to set a link as active pass the path also the res.render() then use javascript in pug file to add an active class.
+
+res.render('page.pug', { "key": "value", "path": "pages/page-1" });
+// in pug file
+// other code goes here
+// li
+//      a(href="/pages/page-1",class=(path==='pages/page-1'?'active':'')) page-1
+// li
+//      a(href="/pages/page-2",class=(path==='pages/page-2'?'active':'')) page-2
+
+//
+
+
+// Handlebars /////////////////////////////
+
+// express handlebars needs to be explicitly imported
+
+const hbs = require('express-handlebars');
+app.engine('hbs', hbs());
+app.set('view engine', 'hbs');
+app.set('views', 'views');
+
+
+// for abobe code to work, extension of view files must be .hbs
+// the way context data is passed to templating engine through app.render() is same for all templating engines.
+// so app.render('page',{key:value}) will work for handlebars too. 
+// However in handlebars, context data is accessed with {{}} operator instead of #{}
+// Handlebars is crap! lets leave it.
+
+//////////////////////////////////////////////////////////////////////// May-01-2020
+
+// ejs templating engine ////////////////////////////
+
+const app = express();
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+
+
+// MVC - model view controller ///////////////
+// model - data
+// view - interface
+// controller - connection between model and view
+
+// to get absolute path of current app
+const root = path.dirname(process.mainModule.filename);
+
+// 'this' has correct context only in arrow function
+
+//////////////////////////////////////////////////////////////////////// May-02-2020
+
+// dynamic routing ////
+// extracting data from url parameters
+
+// define a route like 
+router.get('/products/:id', controllers.getDetails);
+
+// this is a generic handler for the part after colon. It should be therefore placed below other specific routes like '/products/delete.
+
+// this colon syntax is a feature of express
+
+// now to access this url data in controller 
+
+expoprt.controller = (req, res, next) => {
+    const id = req.params.id;
+    console.log(id);
+    res.redirect('/');
+}
+
+// note the syntax for redirecting
+
+
+//////////////////////////////////////////////////////////////////////// May-03-2020
+
+

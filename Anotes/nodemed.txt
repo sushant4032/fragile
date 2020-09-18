@@ -1,0 +1,5 @@
+// to access command line argument
+const arg = process.argv[2];
+
+
+// a package to parse args, yargs

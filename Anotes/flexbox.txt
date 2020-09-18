@@ -1,0 +1,30 @@
+### flex-direction: row-reverse & column-reverse
+
+### simple flexing
+flex-warp:wrap; // container
+flex:200px; // items
+
+ sets minimum width of items as 200px. Items can grow to fill the container. It is however totally different from setting minimum-width.
+
+### Shorthand for flex-direction and flex-wrap;
+ flex-flow:row wrap;
+
+### Flexible sizing; 
+flex: 1 200px; // to the items
+
+flex is actually a shorthand for flex-grow, flex-shirnk and flex-basis. Flex grow and shrink are unitless however flex-basis is width units like px etc.
+
+### ordering flex items
+
+button:nth-of-type(3){
+    order:1;
+}
+
+By default, all flex items have an order value of 0.
+button:last-child {
+  order: -1; // negative values are possible
+}
+
+### auto sizing
+flex-flow:1 auto; // items
+here flex-basis is auto

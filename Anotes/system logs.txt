@@ -1,0 +1,88 @@
+--farcry 5 installed successfully however failed due to a missing dll
+--the missing dll is related to VC2015
+--VC15 did not installed, however vc8, vc9, vc10, vc12 and vc13 installed successfully.
+--before installing vc15, sp1 is required.
+--sp1 not installing. even afte a clean win7 installation from win7 master iso, version installed is home premium.
+--only option is to clean install win7 sp1 or win10
+--got win10 activated using a win7 product key : 7BNT2-FBPPT-92G3P-6DCF8-VH7KD
+-------------------------------------------------
+getting free ssl certificate.
+sslforfree.com
+
+verification is easiest by creating a folder named .well-known in public_html directory and uploading two provided files.
+
+
+three files are provided. certificate which is a security certificate file, ca_bundle is also security certificate file another file is private.key which is a file of type keyfile.
+The certificate can be activated by uploading the certificate files or by pasting their content in proper input box. 
+
+>> go to manage ssl (last link) here private key and certificate can be pasted and activated simultaneously. CA bundle is not required to be provided generally as it can be fetched from a server during activation.
+
+After installing certificate it is essential to configure automatic redirection to https request. This can be done by creating a file .htaccess in root directory (public_html) and its content would be.
+
+ 
+--
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE] 
+--
+
+A new user can be added to a database through phpmyadmin. However godaddy shared hosting does not allow this feature. A new user can be added though cpanel. Steps are. create a user. add the user to a database and configure privillages.
+
+--
+
+<!doctype html> is needed for browsers to know that its a html document. this doctype declaration is not part of html syntax.
+it is not case sensitive.
+--
+
+---
+Installing node on godaddy shared server.
+-enable SSH Access
+SSH Access can be enabled on cPanel
+need to generate keys and download in putty compatible key file.
+install putty
+in putty open new session
+provide ip address and leave port to 22
+go to ssh/auth tab and import key file
+in data tab provide auto login username: this is cPanel primary user name.
+Under saved sessions provide session id created in cpanel (default is id_rsa)
+save and load
+it will ask for password and connect.
+Under manage keys in cpanel/ssh access need to authorize the generated ssh key.
+now in ssh terminal run the commnad 
+wget -qO- https://cdn.rawgit.com/creationix/nvm/master/install.sh | bash
+reopen the terminal or follw instruction for immediate access.
+nvm install node
+
+
+
+-------------------------
+Response of a XHR with get may be a cached content. In order to avoid this problem a random url can be generated for each request. 
+
+xhr.open('GET','./serv/get.php?t=' +Math.random(),true);
+-----------------------------
+SSL renew through FTP verification
+sucessfully generated SSL through FTP verification. account used was ftp1@sushanttiwari.in and directory  as /
+
+Easiest way update new ssl is throung cpanel/SSL-TLS/manage ssl sites/update certificate.
+
+only private key and certificated is required to be provided. Bundle will be automatically fetched.
+
+
+----------------------------
+Generating SSH/RSA keys
+
+puttygen can be used to create ssh keys.
+puttygen can be downloaded from putty site.
+ssh key format is key-type key key-comment
+
+---------------------
+Verifying checksum
+
+windows/cmd: certUtil -hashfile filename sha256/sha1/md5
+
+-----------------
+FTP connection to godaddy server with cyberduck
+--its straight forward
+server:sushanttiwari.in
+port:21
+user:ftp1@sushanttiwari.in

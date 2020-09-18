@@ -1,0 +1,267 @@
+
+###### Git basics
+>>> git show
+>>> git pull origin master --allow-unrelated-histories
+
+# Checkoing git configuration
+
+> git config --list 
+> git config --list --show-origin
+
+# User identity
+> git config --global user.name <username>
+> git config --global user.email <email>
+
+# Short status
+> git status -s
+> git status --porcelain
+
+# Viewing unstaged changes 
+> git diff
+
+# Viewing staged changes 
+> git diff --staged
+> git diff --cached
+
+# Difftool
+> git difftool
+> git difftool --tool-help
+
+# Commiting without staging
+> git commit -a -m <message>
+/ It only commits previously tracked files.
+
+# Removing a tracked file from git and pwd
+> git rm <file>
+
+> git rm <file> -f 
+/ If file is modified or staged.
+
+
+# For unstaging and untracking a file (still remains in pwd)
+> git rm --cached <file>
+
+/ This works for untracking even if the file is not staged.
+
+# Renaming a file
+> git mv <from> <to>
+
+# Viewing commit history
+> git log 
+> git log -2
+> git log --stat
+> git log --oneline
+> git log --graph
+> git log --all
+
+# Ammending commit 
+> git commit --amend -m <message>
+
+# Untracking a file
+> git rm --cached <file>
+/ use -f to delete the file.
+> git rm <file> 
+/ will remove an unmodified file and untracks it.
+
+
+# Unstaging a staged file
+/ git displays command for this action.
+> git reset HEAD <file>
+> git restore --staged <file>
+> git reset HEAD <file>
+
+
+# Discarding changes
+/ git displays command for this action too.
+> git checkout <file>
+> git restore <file>
+/ these two commands only discard unstaged changes.
+
+
+### Working with remote
+
+# Listing remotes
+> git remote
+
+/ 'origin' is the default name of repo form which you cloned
+
+> git remote -v 
+/ This  displays remotes with url
+
+# Adding remore repo
+> git remote add <shortname> <url>
+
+# Inspecting a remote
+> git remote show <remote>
+> git remote show origin
+
+# Renaming and removing remotes
+> git remote rename origin center
+> git remote remove <repo>
+
+
+# Pushing to remote
+> git push <remote> <branch>
+> git push origin master
+/ Note that origin is repo not the branch
+/ Push only works when  have write access to remote repo.
+/ Both repo must be in sync. If somebody pushed before, their works need to be / pulled first.
+
+### Tagging
+
+/ used for marking important points like versions v1.0, v2.0 etc.
+/ Two types of tags
+/ lightweight : just a pointer to specific commit.
+/ annotated : Full objects in git database with tag message and much more.
+
+# creating an annotated tag
+> git tag -a v2.5 -m "my version 2.5"
+
+# creatin a lightweight tag
+> git tag <tag> 
+> git tag v1.0
+
+/ Tag can be added to a past commit using its checksum. 
+> git tag v1.0 <checksum>
+
+
+# Listing tags
+> git tag
+
+/ looking for a tag in a repo (notice the wildcard)
+> git tag --list (-l) "v1.8.6*"
+
+# Viewing a tag
+> git show <tag>
+> git show v2.5
+
+# Deleting tags
+> git tag <tag> -d
+
+# Pushing tags
+/ git push does not push tags by default.
+
+> git push origin <tag>
+
+/ Pushing all tags at once
+> git push origin --tags 
+
+
+# Deleting tags from remote
+> git push origin <tag> --delete  // -d
+
+# Checking out tags
+> git checkout <tag>
+> git checkout v1.0
+/ This however puts the repo in detached HEAD state. 
+
+### Git aliase - creating new git commands
+> git config --global alias.st status
+> git congig --global alias.unstage "reset HEAD"
+> git config --global alias.lg "log --oneline"
+> git config --globla alias.last "log -1"
+/ for some reason single quote created unclosed strings
+/ Was using integrated vscode terminal with cmd.
+/ for running external command start with !
+> git config --global alias.visual "!gitk" - this works only for git tools
+
+######## Git branching
+
+A branch is simple file containg 40 character SHA-1 cheksum of commit it points to. Its size is 41 bytes (40 characters + 1 newline)
+
+Creating a new branch creates a lightweight movable new pointer to the current commit. Therefore creating a new branch without any commit is not a good idea.
+
+The master branch exists vaguely before first commit. git branch before first commit shows nothing.
+
+HEAD is a special pointer to the current branch which in turn points to  last commit. But it is possible to move the HEAD to any commit. However if HEAD does not point to any branch, the repo is in 'detached HEAD' state.
+
+HEAD moves on checkout
+
+# Listing local branches 
+> git branch
+
+# Listing all branches 
+> git branch --all
+
+# Creating a branch
+> git branch <branchname> 
+
+# Switiching branches
+>  git chekout <branch>
+
+# Creating a branch and switching to it 
+> git chekout -b <branch>
+
+> git checkout <branch> -b // does not work !!!!!
+
+# To see which branch tracks whihc remote branch 
+> git branch -vv // duble verbose. Notice single dash.
+
+
+# To see last commit on each branch 
+> git branch -v
+
+# Merging 
+> git merge <branch>
+
+A merge is fast forward when branches do not have diverging history. In other case with diverging histries, merge conflict resolution may be required.
+
+
+--merged and --no-merged can be used to filter the corresponding branches
+> git branch --merged
+
+Deleting unmerged branch with -d will fail. To delete it forcefully, use -D.
+
+### Remote branches
+
+# Listing remote refrences
+> git ls-remote 
+
+# Checking a remote branches
+> git remote show <remote>
+
+origin/master is a local pointer to the position of remote origin. It cannot be updated locally. git fetch downloads from remote repo and updates this pointer locally.
+
+git fetch updates remote tracking branches
+
+> git fetch <remote>
+> git fetch origin
+> git fetch --all // all remotes
+
+A fetch request does not give an editable local branch for a new remote branch. Instead it just creates a <remote>/<branch> pointer that cannot be modified.
+
+# To merge this new branh to local repo
+> git merge origin/new
+
+To get an workable copy
+> git checkout -b new origin/new
+
+
+### Tracking branch
+
+Checking out a loacal branch from a remote branch automatically creates a "tracking branch". And the branch it tracks is called upstream branch. Tracking branch is a local branch that have a direct realtionship to a remote branch.
+
+git pull on a tracking branch knows which server to fetch from and which branch to merge in.
+
+sometimes git automatically sets tracking branch. git chekout new will work if new does not exist locally and new matches to only one <remote>/<branch>
+
+# To checkout a remote branch and track it
+> git checkout -b sf origin/serverfix
+
+# To set an upstream for a local branch, --set-upstream-to or -u
+> git branch -u origin/serverfix
+> git branch --set-upstream-to origin/serverfix
+
+# Pushing a new branch
+> git push origin new --set-upstream-to
+> git push origin new -u
+
+# Deleting a remote branch 
+> git push origin new --delete
+> git push origin new -d
+
+
+@{upsteram} or @{u} refers to upsteram
+
+# To see tracking branch info
+> git branch -vv
