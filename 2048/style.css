@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Sriracha&family=Raleway&display=swap');
+
+body {
+    height: 100vh;
+    overflow: hidden;
+    background: url("https://imgur.com/tZT0B9z.jpg");
+    font-family: Raleway;
+    justify-content: center;
+}
+
+#Game {
+    display: none;
+}
+
+#load {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: white;
+}
+
+#Loader {
+    position: absolute;
+    font-size: 40px;
+    color: rgb(220,70,170);
+    font-weight: center;
+    top: 40%;
+    left: 30%;
+    text-shadow: 3px 3px 9px rgba(50,50,50,0.5);
+}
+
+#box {
+    background: orange;
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    height: 320px;
+    width: 320px;
+    border-radius: 8px;
+}
+
+.block {
+    position: absolute;
+    border: 1px solid black;
+    height: 78px;
+    width: 78px;
+    /*border-radius: 10%;*/
+    text-align: center;
+    line-height: 70px;
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.btn {
+    position: absolute;
+    top: calc(5% + 380px);
+    width: 106px;
+    height: 50px;
+    font-size: 20px;
+    background: url("https://imgur.com/ZUVDeyS.jpg");
+    filter:brightness(60%) sepia(200%);
+    background-size: cover;
+    border: 1px solid black;
+}
+
+.btn:active {
+    filter: brightness(100%);
+}
+
+#l {
+    left: calc(5% + 0px);
+}
+
+#r {
+    left: calc(5% + 212px);
+}
+
+#d {
+    left: calc(5% + 106px);
+}
+
+#u {
+    left: calc(5% + 106px);
+    top: calc(5% + 330px);
+}
+
+#replay {
+    display: none;
+    position: absolute;
+    color: white;
+    top: 5%;
+    left: 5%;
+    height: 320px;
+    width: 320px;
+    background: rgba(100,100,255,0.5);
+    text-align: center;
+    font-size: 25px;
+    font-weight: 900;
+}
+
+#yes {
+    position: absolute;
+    font-size: 20px;
+    top: 210px;
+    left: 20%;
+    height: 40px;
+    width: 60%;
+    border-radius: 20px;
+    background: white;
+    border: 1px solid black;
+}
+
+#yes:hover {
+    background: rgb(255,20,147);
+}
+
+#result {
+    font-size: 40px;
+    color: rgba(255,255,255,0);
+}
+
+#moves {
+    position: absolute;
+    top: 0;
+    left: calc(5% + 230px);
+    font-size: 20px;
+}
+
+#progress {
+    position: absolute;
+    transition: 1s;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 50%;
+    background: blue;
+}
+
+#main {
+    position: absolute;
+    left: 60px;
+    top: 0;
+    height:20px;
+    width:180px;
+    background: red;
+}
+
+b {
+    position: absolute;
+    left: -55px;
+    top: 0;
+}

@@ -1,0 +1,52 @@
+<!--
+Made by: Namit Jain
+    2048
+    
+Rules:
+Basically, 2048 presents with a 4×4 grid. When you start the game, there will be two “tiles” on the grid, each displaying the number 2. You hit the arrow keys on the screen to move the tiles around — and also to generate new tiles, which will also be valued at 2. When two equal tiles collide, they combine to give you one greater tile that displays their sum. The more you do this, obviously, the higher the tiles get and the more crowded the board becomes. Your objective is to reach 2048 before the board fills up.
+
+For the contest by Jadene & Kayla Onobun 
+
+https://code.sololearn.com/WcsAM3JsTyT5/?ref=app
+
+The swiping feature has been enabled!
+
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Page Title</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js"></script>
+</head>
+
+<body>
+    <div id="load">
+        <div id="Loader">Loading...</div>
+    </div>
+    <div id="Game">
+        <div id="main">
+            <b>Rating:</b> <a id="progress"></a>
+        </div>
+        <i id="moves">Moves: </i>
+        <audio id="audio">
+            <source src="http://docs.google.com/uc?export=open&amp;id=1KzGYeT9Td9zR3QDqIBMVNFd1P2gRf9yc"
+                type="audio/mp3">
+        </audio>
+        <div id="box"></div>
+        <div id="replay"><br><br>
+            <div id="result">YOU LOST</div><br><br>
+            Do you want to play again?<br>
+            <button id="yes" class="rbtn">Yes</button>
+            <br><br>
+        </div>
+        <button id="l" class="btn">left</button>
+        <button id="r" class="btn">right</button>
+        <button id="u" class="btn">up</button>
+        <button id="d" class="btn">down</button>
+    </div>
+</body>
+
+</html>
