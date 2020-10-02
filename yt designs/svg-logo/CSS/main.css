@@ -1,0 +1,25 @@
+body {
+  height: 100vh;
+  margin: 0;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+  background: #dee0ef;
+}
+
+.container {
+  width: 400px;
+  height: 400px;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+  border-radius: 4rem;
+  background: #f1f6fc;
+  -webkit-box-shadow: 20px 20px 60px rgba(120, 113, 153, 0.466), 15px 15px 20px rgba(120, 113, 153, 0.582), 3px 3px 5px #787199;
+          box-shadow: 20px 20px 60px rgba(120, 113, 153, 0.466), 15px 15px 20px rgba(120, 113, 153, 0.582), 3px 3px 5px #787199;
+}
+
+path.one {
+  fill: url(#grad1);
+}
+/*# sourceMappingURL=main.css.map */

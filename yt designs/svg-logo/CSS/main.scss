@@ -1,0 +1,22 @@
+body {
+	height: 100vh;
+	margin: 0;
+	display: grid;
+	place-items: center;
+	background: #dee0ef;
+}
+
+.container {
+	width: 400px;
+	height: 400px;
+	display: grid;
+	place-items: center;
+	border-radius: 4rem;
+	background: #f1f6fc;
+	box-shadow: 20px 20px 60px rgba(120, 113, 153, 0.466), 15px 15px 20px rgba(120, 113, 153, 0.582),
+		3px 3px 5px rgba(120, 113, 153, 1);
+}
+
+path.one {
+	fill: url(#grad1);
+}
