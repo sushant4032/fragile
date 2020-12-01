@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>DCH Live</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="css/live.css">
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<script src="libs/angular.js"></script>
+<script src="js/live.js" defer></script>
+<style>
+    body {
+        font-family: "Lato", sans-serif
+    }
+
+    .mySlides {
+        display: none
+    }
+</style>
+
+<body ng-app="myApp" ng-controller="myController">
+
+    <!-- Navbar -->
+    <div class="w3-top">
+        <div class="w3-bar w3-black w3-card">
+            <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right"
+                href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i
+                    class="fa fa-bars"></i></a>
+            <a href="#" class="w3-bar-item w3-button w3-padding-large">LIVE</a>
+            <a href="#trends" class="w3-bar-item w3-button w3-padding-large w3-hide-small">TRENDS</a>
+            <a href="#tables" class="w3-bar-item w3-button w3-padding-large w3-hide-small">TABLES</a>
+            <a href="#graphs" class="w3-bar-item w3-button w3-padding-large w3-hide-small">GRAPHS</a>
+            <div class="w3-dropdown-hover w3-hide-small">
+                <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                    <a href="#" class="w3-bar-item w3-button">SHIFT REPORT</a>
+                    <a href="#" class="w3-bar-item w3-button">DAY REPORT</a>
+                </div>
+            </div>
+            <div class="w3-bar-item w3-hide-small w3-right" ng-hide="auth">
+                <button class="w3-right w3-black w3-padding-small" ng-click="login()">LOGIN</button>
+                <input type="password" name="" id="" class=" w3-left w3-padding-small" ng-model="pin">
+            </div>
+            <div class="w3-bar-item w3-hide-small w3-right " ng-hide="!auth">
+                <span class=" w3-left w3-padding-small">{{user}}</span>
+                <button class="w3-right w3-black w3-padding-small"
+                    ng-click="auth=false; user='Guest'; pin=''">LOGOUT</button>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
+        <a href="#live" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">LIVE</a>
+        <a href="#trends" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">TRENDS</a>
+        <a href="#tables" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">TABLES</a>
+        <a href="#graphs" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">GRAPHS</a>
+    </div>
+
+    <div class="w3-content" style="max-width:2000px;margin-top:48px">
+
+
+
+        <div class="w3-container w3-content w3-center w3-padding" style="max-width:1350px;" id="live">
+            <div class="section" id="live-sec">
+
+
+
+
+
+                <div class="live-sub">
+                    <div class="silo mach" ng-repeat="silo in silos">
+                        <p clas="silo-name"> {{silo.name}}</p>
+                        <div class="rake-incrementer">
+                            <button ng-click="silo.rakes=silo.rakes-1; update()" ng-hide="!auth">-</button>
+                            <span>{{silo.rakes}}</span>
+                            <button ng-click="silo.rakes=silo.rakes+1; update()" ng-hide="!auth">+</button>
+                        </div>
+
+                        <input type="text" ng-model="silo.remark" ng-change="update()">
+                    </div>
+
+                    <div class="mach live-dumper">
+                        <p> EAST DUMPERS</p>
+                        <div>
+                            <button ng-click="dumperCounter(1)" ng-hide="!auth">-</button>
+                            <p class="dumper-param">AVL</p>
+                            <p>{{dumper. east_avl}}</p>
+                            <button ng-click="dumperCounter(2)" ng-hide="!auth">+</button>
+                        </div>
+                        <div>
+                            <button ng-click="dumperCounter(3)" ng-hide="!auth">-</button>
+                            <p class="dumper-param">RUN</p>
+                            <p>{{dumper. east_run}}</p>
+                            <button ng-click="dumperCounter(4)" ng-hide="!auth">+</button>
+                        </div>
+                    </div>
+
+
+                    <div class="mach live-dumper">
+                        <p>WEST DUMPERS</p>
+                        <div>
+                            <button ng-click="dumperCounter(5)" ng-hide="!auth">-</button>
+                            <p class="dumper-param">AVL</p>
+                            <p>{{dumper.west_avl}}</p>
+                            <button ng-click="dumperCounter(6)" ng-hide="!auth">+</button>
+                        </div>
+                        <div>
+                            <button ng-click="dumperCounter(7)" ng-hide="!auth">-</button>
+                            <p class="dumper-param">RUN</p>
+                            <p>{{dumper.west_run}}</p>
+                            <button ng-click="dumperCounter(8)" ng-hide="!auth">+</button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="live-sub">
+                    <div class="machine mach" ng-repeat="x in machines" ng-hide="x.type!='crusher'">
+                        <div class="inner">
+                            <div class="front {{ statusStrings[x.status] }}">
+                                <p class="machine-title">{{ x.name }}</p>
+                                <p class="machine-remark">{{ x.remark }}</p>
+                            </div>
+
+                            <div class="back">
+
+                                <select ng-model="x.status" ng-change="update()"
+                                    ng-options="statusStrings[s] for s in statusCodes" ng-disabled="!auth"></select>
+                                <input class="back-remark" ng-model="x.remark" ng-change="update()" placeholder="Remark"
+                                    type="text" ng-disabled="!auth" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="live-sub">
+                    <div class="machine mach" ng-repeat="x in machines" ng-hide="x.type!='shovel'">
+                        <div class="inner">
+                            <div class="front {{ statusStrings[x.status] }}">
+                                <p class="machine-title">{{ x.name }}</p>
+                                <p class="machine-remark">{{ x.remark }}</p>
+                            </div>
+
+                            <div class="back">
+
+                                <select ng-model="x.status" ng-change="update()"
+                                    ng-options="statusStrings[s] for s in statusCodes" ng-disabled="!auth"></select>
+                                <input class="back-remark" ng-model="x.remark" ng-change="update()" placeholder="Remark"
+                                    type="text" ng-disabled="!auth" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <div class="live-sub">
+                    <div class="machine mach" ng-repeat="x in machines" ng-hide="x.type!='dragline'">
+                        <div class="inner">
+                            <div class="front {{ statusStrings[x.status] }}">
+                                <p class="machine-title">{{ x.name }}</p>
+                                <p class="machine-remark">{{ x.remark }}</p>
+                            </div>
+
+                            <div class="back">
+
+                                <select ng-model="x.status" ng-change="update()"
+                                    ng-options="statusStrings[s] for s in statusCodes" ng-disabled="!auth"></select>
+                                <input class="back-remark" ng-model="x.remark" ng-change="update()" placeholder="Remark"
+                                    type="text" ng-disabled="!auth" />
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+        <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:1350px" id="trends">
+            <div class="section" id="trends-sec">
+                <div class="trend-row" ng-repeat="x in machines">
+                    <div class="mcname">
+                        {{x.name}}
+                    </div>
+                    <div class="mctrend">
+                        <div ng-repeat="y in x.logs track by $index"
+                            class="tooltip trend-block {{statusStrings[y]}}-block" ng-click=" trendToggle(x,$index)">
+                            <span class="tooltiptext">{{timef($index)}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+        <div class="w3-container w3-content w3-padding-64" style="max-width:1350px" id="graphs">
+
+            <div class="section" id="graphs-sec">
+
+                <table class="graphs-tbl">
+                    <tr class="tbl-hdr">
+                        <td colspan="4">CRUSHERS</td>
+                    </tr>
+                    <tr>
+                        <td>IDL</td>
+                        <td>{{crusherTotal.idlhms}}</td>
+                        <td rowspan="3" class="bar-td">
+                            <div class="bar-parent">
+                                <div class="avl-bar" style="height:{{crusherTotal.avlstr}}">
+                                    <span>{{crusherTotal.avlstr}}</span>
+
+                                </div>
+                            </div>
+                        </td>
+                        <td rowspan="3" class="bar-td">
+                            <div class="bar-parent">
+                                <div class="utl-bar" style="height:{{crusherTotal.utlstr}};">
+                                    <span>{{crusherTotal.utlstr}}</span>
+
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RUN</td>
+                        <td>{{crusherTotal.runhms}}</td>
+                    </tr>
+                    <tr>
+                        <td>BDN</td>
+                        <td>{{crusherTotal.brkhms}}</td>
+                    </tr>
+                    <tr>
+                        <td>AVL</td>
+                        <td>{{crusherTotal.avlhms}}</td>
+                        <td>% AVL</td>
+                        <td>% UTL</td>
+                    </tr>
+                </table>
+
+                <table class="graphs-tbl">
+                    <tr class="tbl-hdr">
+                        <td colspan="4">SHOVEL</td>
+                    </tr>
+                    <tr>
+                        <td>IDL</td>
+                        <td>{{shovelTotal.idlhms}}</td>
+                        <td rowspan="3" class="bar-td">
+                            <div class="bar-parent">
+                                <div class="avl-bar" style="height:{{shovelTotal.avlstr}}">
+                                    <span>{{shovelTotal.avlstr}}</span>
+
+                                </div>
+                            </div>
+                        </td>
+                        <td rowspan="3" class="bar-td">
+                            <div class="bar-parent">
+                                <div class="utl-bar" style="height:{{shovelTotal.utlstr}};">
+                                    <span>{{shovelTotal.utlstr}}</span>
+
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RUN</td>
+                        <td>{{shovelTotal.runhms}}</td>
+                    </tr>
+                    <tr>
+                        <td>BDN</td>
+                        <td>{{shovelTotal.brkhms}}</td>
+                    </tr>
+                    <tr>
+                        <td>AVL</td>
+                        <td>{{shovelTotal.avlhms}}</td>
+                        <td>% AVL</td>
+                        <td>% UTL</td>
+                    </tr>
+                </table>
+
+                <table class="graphs-tbl">
+                    <tr class="tbl-hdr">
+                        <td colspan="4">DRAGLINES</td>
+                    </tr>
+                    <tr>
+                        <td>IDL</td>
+                        <td>{{draglineTotal.idlhms}}</td>
+                        <td rowspan="3" class="bar-td">
+                            <div class="bar-parent">
+                                <div class="avl-bar" style="height:{{draglineTotal.avlstr}}">
+                                    <span>{{draglineTotal.avlstr}}</span>
+
+                                </div>
+                            </div>
+                        </td>
+                        <td rowspan="3" class="bar-td">
+                            <div class="bar-parent">
+                                <div class="utl-bar" style="height:{{draglineTotal.utlstr}};">
+                                    <span>{{draglineTotal.utlstr}}</span>
+
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RUN</td>
+                        <td>{{draglineTotal.runhms}}</td>
+                    </tr>
+                    <tr>
+                        <td>BDN</td>
+                        <td>{{draglineTotal.brkhms}}</td>
+                    </tr>
+                    <tr>
+                        <td>AVL</td>
+                        <td>{{draglineTotal.avlhms}}</td>
+                        <td>% AVL</td>
+                        <td>% UTL</td>
+                    </tr>
+                </table>
+                
+
+
+                <table class="graphs-tbl">
+                    <tr class="tbl-hdr">
+                        <td colspan="4">DUMPERS</td>
+                    </tr>
+                    <tr>
+                        <td>IDL</td>
+                        <td>{{dumperTotal.idlhms}}</td>
+                        <td rowspan="3" class="bar-td">
+                            <div class="bar-parent">
+                                <div class="avl-bar" style="height:{{dumperTotal.avlstr}}">
+                                    <span>{{dumperTotal.avlstr}}</span>
+
+                                </div>
+                            </div>
+                        </td>
+                        <td rowspan="3" class="bar-td">
+                            <div class="bar-parent">
+                                <div class="utl-bar" style="height:{{dumperTotal.utlstr}};">
+                                    <span>{{dumperTotal.utlstr}}</span>
+
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RUN</td>
+                        <td>{{dumperTotal.runhms}}</td>
+                    </tr>
+                    <tr>
+                        <td>BDN</td>
+                        <td>{{dumperTotal.brkhms}}</td>
+                    </tr>
+                    <tr>
+                        <td>AVL</td>
+                        <td>{{dumperTotal.avlhms}}</td>
+                        <td>% AVL</td>
+                        <td>% UTL</td>
+                    </tr>
+                </table>
+
+
+
+            </div>
+        </div>
+
+
+
+
+
+        <div class="w3-container w3-content w3-padding-64" style="max-width:1350px" id="tables">
+            <div class="section" id="tables-sec">
+
+                <div class="east-dumper-table">
+                    <p class="tbl-title w3-green w3-padding w3-xlarge">EAST DUMPERS</p>
+                    <table class="w3-table-all">
+                        <tr class="w3-green">
+                            <td>HOUR</td>
+                            <td>AVL</td>
+                            <td>RUN</td>
+                            <td>IDL</td>
+                            <td>BRK</td>
+                            <td>AVLI</td>
+                            <td>UTLI</td>
+                        </tr>
+                        <tr ng-repeat="x in dumpers">
+                            <td>{{x.hour+1}}</td>
+                            <td><input type="number" ng-model="x.east_avl" ng-disabled="!auth || x.hour>=hour"
+                                    ng-change="update()"></td>
+                            <td><input type="number" ng-model="x.east_run" ng-disabled="!auth || x.hour>=hour"
+                                    ng-change="update()"></td>
+                            <td>{{x.east_idl}}</td>
+                            <td>{{x.east_brk}}</td>
+                            <td>{{x.east_avli}} %</td>
+                            <td>{{x.east_utli}} %</td>
+                        </tr>
+                            <tr class="w3-green">
+                                <td>TOTAL</td>
+                                <td>{{dumperTotal.east_avl}} Hrs</td>
+                                <td>{{dumperTotal.east_run}} Hrs</td>
+                                <td>{{dumperTotal.east_idl}} Hrs</td>
+                                <td>{{dumperTotal.east_brk}} Hrs</td>
+                                <td>{{dumperTotal.east_avli}} %</td>
+                                <td>{{dumperTotal.east_utli}} %</td>
+                            </tr>
+                    </table>
+                </div>
+
+                <div class="west-dumper-table">
+                    <p class="tbl-title w3-green w3-padding w3-xlarge">WEST DUMPERS</p>
+                    <table class="w3-table-all">
+                        <tr class="w3-green">
+                            <td>HOUR</td>
+                            <td>AVL</td>
+                            <td>RUN</td>
+                            <td>IDL</td>
+                            <td>BRK</td>
+                            <td>AVLI</td>
+                            <td>UTLI</td>
+                        </tr>
+                        <tr ng-repeat="x in dumpers">
+                            <td>{{x.hour+1}}</td>
+                            <td><input type="number" ng-model="x.west_avl" ng-disabled="!auth || x.hour>=hour"
+                                    ng-change="update()"></td>
+                            <td><input type="number" ng-model="x.west_run" ng-disabled="!auth || x.hour>=hour"
+                                    ng-change="update()"></td>
+                            <td>{{x.west_idl}}</td>
+                            <td>{{x.west_brk}}</td>
+                            <td>{{x.west_avli}} %</td>
+                            <td>{{x.west_utli}} %</td>
+                        </tr>
+                        <tr class="w3-green">
+                            <td>TOTAL</td>
+                            <td>{{dumperTotal.west_avl}} Hrs</td>
+                            <td>{{dumperTotal.west_run}} Hrs</td>
+                            <td>{{dumperTotal.west_idl}} Hrs</td>
+                            <td>{{dumperTotal.west_brk}} Hrs</td>
+                            <td>{{dumperTotal.west_avli}} %</td>
+                            <td>{{dumperTotal.west_utli}} %</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="shovel-perf-div">
+                    <p class="tbl-title w3-green w3-padding w3-xlarge">SHOVELS</p>
+                    <table class="shovel-perf-table w3-table-all">
+                        <tr class="w3-green">
+                            <th>Shovel</th>
+                            <th>Avl hrs</th>
+                            <th>Idl hrs</th>
+                            <th>Run hrs</th>
+                            <th>Bdn hrs</th>
+                            <th>% Avl</th>
+                            <th>% Utl</th>
+                        </tr>
+
+
+                        <tr ng-repeat="s in machines" ng-hide="s.type!='shovel'">
+
+                            <td>{{s.name}}</td>
+                            <td>{{s.avlhms}}</td>
+                            <td>{{s.idlhms}}</td>
+                            <td>{{s.runhms}}</td>
+                            <td>{{s.brkhms}}</td>
+                            <td>{{s.avlstr}}</td>
+                            <td>{{s.utlstr}}</td>
+                        </tr>
+                        <tr class="total w3-green">
+                            <td>TOTAL</td>
+                            <td>{{shovelTotal.avlhms}}</td>
+                            <td>{{shovelTotal.idlhms}}</td>
+                            <td>{{shovelTotal.runhms}}</td>
+                            <td>{{shovelTotal.brkhms}}</td>
+                            <td>{{shovelTotal.avlstr}}</td>
+                            <td>{{shovelTotal.utlstr}}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="crusher-perf-div">
+                    <p class="tbl-title w3-green w3-padding w3-xlarge">CRUSHERS</p>
+                    <table class="crusher-perf-table w3-table-all">
+                        <tr class="w3-green">
+                            <th>Crusher</th>
+                            <th>Avl hrs</th>
+                            <th>Idl hrs</th>
+                            <th>Run hrs</th>
+                            <th>Bdn hrs</th>
+                            <th>% Avl</th>
+                            <th>% Utl</th>
+                        </tr>
+                        <tr ng-repeat="s in machines" ng-hide="s.type!='crusher'">
+
+                            <td>{{s.name}}</td>
+                            <td>{{s.avlhms}}</td>
+                            <td>{{s.idlhms}}</td>
+                            <td>{{s.runhms}}</td>
+                            <td>{{s.brkhms}}</td>
+                            <td>{{s.avlstr}}</td>
+                            <td>{{s.utlstr}}</td>
+                        </tr>
+                        <tr class="total w3-green">
+                            <td>TOTAL</td>
+                            <td>{{crusherTotal.avlhms}}</td>
+                            <td>{{crusherTotal.idlhms}}</td>
+                            <td>{{crusherTotal.runhms}}</td>
+                            <td>{{crusherTotal.brkhms}}</td>
+                            <td>{{crusherTotal.avlstr}}</td>
+                            <td>{{crusherTotal.utlstr}}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="dragline-perf-div">
+                    <p class="tbl-title w3-green w3-padding w3-xlarge">DRAGLINES</p>
+                    <table class="dragline-perf-table w3-table-all">
+                        <tr class="w3-green">
+                            <th>Dragline</th>
+                            <th>Avl hrs</th>
+                            <th>Idl hrs</th>
+                            <th>Run hrs</th>
+                            <th>Bdn hrs</th>
+                            <th>% Avl</th>
+                            <th>% Utl</th>
+                        </tr>
+                        <tr ng-repeat="s in machines" ng-hide="s.type!='dragline'">
+
+                            <td>{{s.name}}</td>
+                            <td>{{s.avlhms}}</td>
+                            <td>{{s.idlhms}}</td>
+                            <td>{{s.runhms}}</td>
+                            <td>{{s.brkhms}}</td>
+                            <td>{{s.avlstr}}</td>
+                            <td>{{s.utlstr}}</td>
+                        </tr>
+                        <tr class="total w3-green">
+                            <td>TOTAL</td>
+                            <td>{{draglineTotal.avlhms}}</td>
+                            <td>{{draglineTotal.idlhms}}</td>
+                            <td>{{draglineTotal.runhms}}</td>
+                            <td>{{draglineTotal.brkhms}}</td>
+                            <td>{{draglineTotal.avlstr}}</td>
+                            <td>{{draglineTotal.utlstr}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- Footer -->
+    <footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
+
+    </footer>
+
+    <script>
+        // Automatic Slideshow - change image every 4 seconds
+        var myIndex = 0;
+
+
+
+        // Used to toggle the menu on small screens when clicking on the menu button
+        function myFunction() {
+            var x = document.getElementById("navDemo");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        var modal = document.getElementById('ticketModal');
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

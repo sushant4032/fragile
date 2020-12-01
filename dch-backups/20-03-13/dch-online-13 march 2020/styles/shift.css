@@ -1,0 +1,61 @@
+.header-2 {
+  background: #111;
+  color: white;
+}
+
+.shift-selector {
+  display: flex;
+  /* justify-content: space-between; */
+}
+
+.shift-name {
+  width: 30%;
+}
+
+.shift-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shift-changer:hover {
+  color: yellow;
+}
+
+.section-selector {
+  margin-top: 10px;
+}
+
+.section table {
+  margin-top: 30px;
+}
+
+.tab {
+  display: inline-block;
+  padding: 0.25vw 1vw;
+  border-radius: 3px 3px 0 0;
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+}
+
+.tab:hover {
+  color: gold;
+}
+
+.active-tab, .active-tab:hover {
+  background: #fdf6f6;
+  color: black;
+}
+
+.shovel-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width:768px){
+  .shift-name{
+    width:80%;
+  }
+}

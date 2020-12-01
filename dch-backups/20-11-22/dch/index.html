@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>DCH Live</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="css/live.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- <script src="libs/jquery.js" defer></script> -->
+<!-- <script src="libs/angular.js"></script> -->
+
+<script src="js/navigation.js" defer></script>
+
+<script src="js/exp.js" defer></script>
+<script src="js/live.js" defer></script>
+
+
+
+
+<body ng-app="myApp" ng-controller="myController">
+    <header>
+        <ul class="section-selector">
+            <li id="live-tab" href="#" onmouseDown="openSection('live','live-tab')" class="tab">Live</li>
+            <li id="trends-tab" href="#" onmouseDown="openSection('trends','trends-tab')" class="tab">Trends</li>
+            <li id="crushers-tab" href="#" onmouseDown="openSection('details', 'crushers-tab')"
+                ng-click="detailsSection('crushers')" class="tab">Crushers</li>
+            <li id="shovels-tab" href="#" onmouseDown="openSection('details','shovels-tab')"
+                ng-click="detailsSection('shovels')" class="tab">Shovels</li>
+            <li id="draglines-tab" href="#" onmouseDown="openSection('details','draglines-tab')"
+                ng-click="detailsSection('draglines')" class="tab">Draglines</li>
+            <li id="dumpers-tab" href="#" onmouseDown="openSection('dumpers','dumpers-tab')" class="tab">Dumpers</li>
+
+        </ul>
+        <!-- <div class="dev">
+            <button ng-click="randomize()">Randomize</button>
+        </div> -->
+        <div class="login">
+            <div class="" ng-hide="auth">
+                <input type="password" name="" id="" class="" ng-model="pin">
+                <button class="" ng-click="login()">LOGIN</button>
+            </div>
+            <div class=" " ng-hide="!auth">
+                <span class="">{{user}}</span>
+                <button class="" ng-click="auth=false; user='Guest'; pin=''">LOGOUT</button>
+            </div>
+        </div>
+    </header>
+    <main>
+
+
+        <div class="section" id="live-sec">
+
+            <div class="live-bar">
+                <div class="table-container">
+                    <table>
+                        <tr>
+                            <th>SILO</th>
+                            <th>LOADED</th>
+                            <th>NEXT</th>
+                        </tr>
+                        <tr ng-repeat="silo in silos">
+                            <td clas="silo-name"> {{silo.name}}</td>
+                            <td>
+                                <div class="incrementor">
+                                    <button ng-click="silo.rakes=silo.rakes-1; update()" ng-hide="!auth">-</button>
+                                    <span>{{silo.rakes}}</span>
+                                    <button ng-click="silo.rakes=silo.rakes+1; update()" ng-hide="!auth">+</button>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="silo.remark" ng-change="update()">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <tr>
+                            <th>DUMPERS</th>
+                            <th>AVL</th>
+                            <th>RNG</th>
+                        </tr>
+                        <tr>
+                            <td>EAST</td>
+                            <td>
+                                <div class="incrementor">
+                                    <button ng-click="dumperCounter(1)" ng-hide="!auth">-</button>
+                                    <span> {{dumper.east_avl}} </span>
+                                    <button ng-click="dumperCounter(2)" ng-hide="!auth">+</button>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="incrementor">
+                                    <button ng-click="dumperCounter(3)" ng-hide="!auth">-</button>
+                                    <span> {{dumper.east_run}} </span>
+                                    <button ng-click="dumperCounter(4)" ng-hide="!auth">+</button>
+                                </div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>WEST</td>
+                            <td>
+                                <div class="incrementor">
+                                    <button ng-click="dumperCounter(5)" ng-hide="!auth">-</button>
+                                    <span> {{dumper.west_avl}} </span>
+                                    <button ng-click="dumperCounter(6)" ng-hide="!auth">+</button>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="incrementor">
+                                    <button ng-click="dumperCounter(7)" ng-hide="!auth">-</button>
+                                    <span> {{dumper.west_run}} </span>
+                                    <button ng-click="dumperCounter(8)" ng-hide="!auth">+</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>TOTAL</td>
+                            <td>
+                                <div class="incrementor">
+                                    <span> {{dumper.avl}} </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="incrementor">
+                                    <span> {{dumper.run}} </span>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="live-content">
+                <!-- <div class="silo mach" ng-repeat="silo in silos">
+                    <p clas="silo-name"> {{silo.name}}</p>
+                    <div class="incrementor">
+                        <button ng-click="silo.rakes=silo.rakes-1; update()" ng-hide="!auth">-</button>
+                        <span>{{silo.rakes}}</span>
+                        <button ng-click="silo.rakes=silo.rakes+1; update()" ng-hide="!auth">+</button>
+                    </div>
+                    <input type="text" ng-model="silo.remark" ng-change="update()">
+                </div>
+
+                <div class="mach live-dumper">
+                    <p> EAST DUMPERS</p>
+                    <div>
+                        <button ng-click="dumperCounter(1)" ng-hide="!auth">-</button>
+                        <p class="dumper-param">AVL</p>
+                        <p>{{dumper. east_avl}}</p>
+                        <button ng-click="dumperCounter(2)" ng-hide="!auth">+</button>
+                    </div>
+                    <div>
+                        <button ng-click="dumperCounter(3)" ng-hide="!auth">-</button>
+                        <p class="dumper-param">RUN</p>
+                        <p>{{dumper. east_run}}</p>
+                        <button ng-click="dumperCounter(4)" ng-hide="!auth">+</button>
+                    </div>
+                </div> 
+
+                 <div class="mach live-dumper">
+                    <p>WEST DUMPERS</p>
+                    <div>
+                        <button ng-click="dumperCounter(5)" ng-hide="!auth">-</button>
+                        <p class="dumper-param">AVL</p>
+                        <p>{{dumper.west_avl}}</p>
+                        <button ng-click="dumperCounter(6)" ng-hide="!auth">+</button>
+                    </div>
+                    <div>
+                        <button ng-click="dumperCounter(7)" ng-hide="!auth">-</button>
+                        <p class="dumper-param">RUN</p>
+                        <p>{{dumper.west_run}}</p>
+                        <button ng-click="dumperCounter(8)" ng-hide="!auth">+</button>
+                    </div>
+                </div> -->
+
+                <div class=" mach" ng-repeat="x in machines">
+                    <div class="inner">
+                        <div class="front {{ statusStrings[x.status] }}">
+                            <p class="mach-title">{{ x.name }}</p>
+                            <p class="mach-remark">{{ x.remark }}</p>
+                        </div>
+
+                        <div class="back">
+
+                            <select ng-model="x.status" ng-change="machineStatus(x)"
+                                ng-options="statusStrings[s] for s in statusCodes" ng-disabled="!auth"></select>
+                            <input class="back-remark" ng-model="x.remark" ng-change="update()" placeholder="Remark"
+                                type="text" ng-disabled="!auth" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="trends-sec">
+            <div class="trend-row" ng-repeat="x in machines">
+                <p class="mcname"> {{x.name}} </p>
+                <div class="mctrend">
+                    <div ng-repeat="y in x.logs track by $index" class="tooltip trend-block {{statusStrings[y]}}"
+                        ng-click=" trendToggle(x,$index)">
+                        <span class="tooltiptext">{{timef($index)}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="section" id="details-sec">
+            <header class="graph-section-header">
+
+            </header>
+
+            <div class="chart-container">
+                <canvas id="details-time" width="400" height="400">
+                </canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="details-perf" width="400" height="400">
+                </canvas>
+            </div>
+            <div class="table-container">
+                <table class="perf-table">
+                    <tr class="head">
+                        <td colspan="8">CRUSHERS</td>
+                    </tr>
+                    <tr class="">
+                        <th></th>
+                        <th>AVL</th>
+                        <th>RUN</th>
+                        <th>BDN</th>
+                        <th>MNT</th>
+                        <th>IDL</th>
+                        <th>%AVL</th>
+                        <th>%UTL</th>
+                    </tr>
+                    <tr ng-repeat="s in mcns">
+
+                        <td>{{s.name}}</td>
+                        <td>{{hms(s.avlm)}}</td>
+                        <td>{{hms(s.runm)}}</td>
+                        <td>{{hms(s.brkm)}}</td>
+                        <td>{{hms(s.mntm)}}</td>
+                        <td>{{hms(s.idlm)}}</td>
+                        <td>{{s.pavl}}%</td>
+                        <td>{{s.putl}}%</td>
+                    </tr>
+                    <tr class="total">
+                        <td>TOTAL</td>
+                        <td>{{hms(mcnTotal.avlm)}}</td>
+                        <td>{{hms(mcnTotal.runm)}}</td>
+                        <td>{{hms(mcnTotal.brkm)}}</td>
+                        <td>{{hms(mcnTotal.mntm)}}</td>
+                        <td>{{hms(mcnTotal.idlm)}}</td>
+                        <td>{{mcnTotal.pavl}}%</td>
+                        <td>{{mcnTotal.putl}}%</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="section" id="dumpers-sec">
+
+
+            <table class="perf-table">
+                <tr class="head">
+                    <td colspan="7">EAST DUMPERS</td>
+                </tr>
+                <tr class="">
+                    <th>HOUR</th>
+                    <th>AVL</th>
+                    <th>RUN</th>
+                    <th>%AVL</th>
+                    <th>%UTL</th>
+                </tr>
+                <tr ng-repeat="x in dumpers track by $index" ng-hide="x.hour > hour">
+                    <td>{{hourf(x.hour)}}</td>
+                    <td><input type="number" ng-model="x.east_avl" ng-disabled="!auth || x.hour>=hour"
+                            ng-change="update()"></td>
+                    <td><input type="number" ng-model="x.east_run" ng-disabled="!auth || x.hour>=hour"
+                            ng-change="update()"></td>
+                    <td>{{x.east_pavl}} %</td>
+                    <td>{{x.east_putl}} %</td>
+                </tr>
+                <tr class="total">
+                    <td>TOTAL</td>
+                    <td>{{dumperTotal.east_avl}} Hrs</td>
+                    <td>{{dumperTotal.east_run}} Hrs</td>
+                    <td>{{dumperTotal.east_pavl}} %</td>
+                    <td>{{dumperTotal.east_putl}} %</td>
+                </tr>
+            </table>
+
+            <table class="perf-table">
+                <tr class="head">
+                    <td colspan="7">WEST DUMPERS</td>
+                </tr>
+                <tr class="">
+                    <th>HOUR</th>
+                    <th>AVL</th>
+                    <th>RUN</th>
+                    <th>%AVL</th>
+                    <th>%UTL</th>
+                </tr>
+                <tr ng-repeat="x in dumpers track by $index" ng-hide="x.hour > hour">
+                    <td>{{hourf(x.hour)}}</td>
+                    <td><input type="number" ng-model="x.west_avl" ng-disabled="!auth || x.hour>=hour"
+                            ng-change="update()"></td>
+                    <td><input type="number" ng-model="x.west_run" ng-disabled="!auth || x.hour>=hour"
+                            ng-change="update()"></td>
+                    <td>{{x.west_pavl}} %</td>
+                    <td>{{x.west_putl}} %</td>
+                </tr>
+                <tr class="total">
+                    <td>TOTAL</td>
+                    <td>{{dumperTotal.west_avl}} Hrs</td>
+                    <td>{{dumperTotal.west_run}} Hrs</td>
+                    <td>{{dumperTotal.west_pavl}} %</td>
+                    <td>{{dumperTotal.west_putl}} %</td>
+                </tr>
+            </table>
+
+        </div>
+
+    </main>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" defer></script>
+
+</html>
